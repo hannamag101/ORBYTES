@@ -207,11 +207,16 @@ def space_model():
     st.write('* The value associated with the TIME_SYSTEM keyword shall be ‘UTC’.')
 
     image = Image.open('Images/orientation.png')
-    st.image(image, caption = '2D Image of Orientation of Orbital Planes which satellites occupy')
-    
+    st.image(image, caption = '2D Image of Orientation of Orbital Planes which satellites occupy')     
+
+    # Need orbital elements extracted of specific satellites 
+    option = st.selectbox('**:blue[Which Constellation of Satellites would you like to plot?]**',
+                      ('STARLINK','STARLINK 1:20', 'GALILEO', 'GLONASS', 'GLONASS 1:20', 'GLOBALSTAR',
+                      'GLOBALSTAR 1:20'))
+    st.write('You selected:', option)
+
     def eccentric_anomaly(file, index = 0, iterations = 500): # file is Pandas DataFrame
-        whole_file = file
-        file = pd.read_csv(whole_file)
+        file = pd.read_csv(file)
         mean_anomaly = file['MEAN_ANOMALY'].iloc[index]
         eccentricity = file['ECCENTRICITY'].iloc[index]
         
@@ -230,14 +235,8 @@ def space_model():
                 pass
     
             initial_guess = E_new
-            ind+=1      
-
-    # Need orbital elements extracted of specific satellites 
-    option = st.selectbox('**:blue[Which Constellation of Satellites would you like to plot?]**',
-                      ('STARLINK','STARLINK 1:20', 'GALILEO', 'GLONASS', 'GLONASS 1:20', 'GLOBALSTAR',
-                      'GLOBALSTAR 1:20'))
-    st.write('You selected:', option)
-
+            ind+=1 
+            
     def select_data(output_file, **kwargs):
         reduced_data = pd.read_csv(output_file)
         for key, value in kwargs.items():
@@ -281,7 +280,8 @@ def space_model():
         data = data[0:20]
     else: 
         data = select_data('Example_csv_set/all_data.csv', OBJECT_NAME = f'{option}-*')
-    
+        
+    data.to_csv('new_data.csv')
     st.header(f'Sample Data for {option} constellation given by Space-Track.org')
     st.write(data.head())    
 
@@ -325,7 +325,7 @@ def space_model():
 
 
     for i in range(len(data)):
-        object_name, a, e, i, asc, per, ano = extract_orbital_elements(data, index = i)
+        object_name, a, e, inc, asc, per, true_anomaly = extract_orbital_elements('new_data.csv', index = i)
     
         # Orientation components
         inc = inc * ((2*np.pi) / 360)  # in radians
