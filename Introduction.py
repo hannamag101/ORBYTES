@@ -292,7 +292,7 @@ def space_model():
     unit_vector = np.array([1,1,1])
     earth_pos_vector = []
     for cartesian_component in unit_vector:
-        earth_pos_vector.append(earth_radius / cartesian_component)
+        earth_pos_vector.append(6378 / cartesian_component)
     r_x = earth_pos_vector[0]
     r_y = earth_pos_vector[1]
     r_z = earth_pos_vector[2]
@@ -307,7 +307,7 @@ def space_model():
     z = r_z * np.outer(np.ones_like(theta), np.cos(phi))
         
     # Find extent of Earth's orbital plane as reference plane (equatorial plane)
-    r_earth = (earth_radius * (1 - e_earth**2)) / (1 + e_earth * np.cos(theta))
+    r_earth = (6378 * (1 - 0**2)) / (1 + 0 * np.cos(theta))
         
     # Polar coordinates of Earth's Equatorial Plane projection
     polar_x_e = r_earth * np.cos(theta)
