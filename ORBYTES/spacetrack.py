@@ -37,7 +37,7 @@ class Satellite_Modeler():
             initial_guess = E_new
             ind+=1  
             
-    def eccentric_anomaly_own(self, mean_anomaly, eccentricity, iterations = 500):
+    def eccentric_anomaly_own_input(self, mean_anomaly, eccentricity, iterations = 500):
         if mean_anomaly >= 0.6:
             initial_guess = np.pi
         else:
@@ -62,7 +62,7 @@ class Satellite_Modeler():
         asc = asc # be careful of the units (make sure to keep track RADIANS or DEGREES)
         per = per
         mean_anomaly = mean_anomaly
-        ecc_anomaly = self.eccentric_anomaly_own(mean_anomaly, e)
+        ecc_anomaly = self.eccentric_anomaly_own_input(mean_anomaly, e)
         true_anomaly = np.arctan((np.sqrt(1 - e**2) * np.sin(ecc_anomaly)) / (np.cos(ecc_anomaly) - e))
         
         return a, e, inc, asc, per, true_anomaly
