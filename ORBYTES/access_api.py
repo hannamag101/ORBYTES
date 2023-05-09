@@ -65,7 +65,7 @@ class setup_files():
         sign_in = {'identity': user, 'password': pasw}
         return sign_in
     
-    def generate_query(self, generate = False, orderby, **predicates):
+    def generate_query(self, generate = False, **predicates, orderby):
         # MUST ALWAYS MENTION AN 'ORDERBY' ARGUMENT (i.e. OBJECT_NAME, OBJECT_ID, etc.)
         # If generating own query to extract specific category of data, enter all predicates/constraints on constellation to form url 
         query_str = ""
