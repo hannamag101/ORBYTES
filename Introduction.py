@@ -281,19 +281,19 @@ def space_model():
         data = select_data('Example_csv_set/all_data.csv', OBJECT_NAME = 'STARLINK-*')
     elif option == 'STARLINK 10:20':
         data = select_data('Example_csv_set/all_data.csv', OBJECT_NAME = 'STARLINK-*')
-        data = data[0:20]
+        data = data[10:20]
     elif option == 'GALILEO':
         data = select_data('Example_csv_set/all_data.csv', OBJECT_NAME = 'GALILEO-*')
     elif option == 'GLONASS':
         data = select_data('Example_csv_set/all_data.csv', OBJECT_NAME = 'GLONASS-*')
     elif option == 'GLONASS 10:20':
         data = select_data('Example_csv_set/all_data.csv', OBJECT_NAME = 'GLONASS-*')
-        data = data[0:20]
+        data = data[10:20]
     elif option == 'GLOBALSTAR':
         data = select_data('Example_csv_set/all_data.csv', OBJECT_NAME = 'GLOBALSTAR-*')
     elif option == 'GLOBALSTAR 10:20':
         data = select_data('Example_csv_set/all_data.csv', OBJECT_NAME = 'GLOBALSTAR-*')
-        data = data[0:20]
+        data = data[10:20]
     else: 
         data = select_data('Example_csv_set/all_data.csv', OBJECT_NAME = f'{option}-*')
         
