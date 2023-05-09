@@ -1,7 +1,0 @@
-Metadata-Version: 2.1
-Name: ORBYTES
-Version: 0.1
-Summary: ORBYTES provides users the ability to interact with an API interface to extract, visualize, and integrate satellite trajectories actively tracked by space-track.org. In addition to mapping the orbital paths of payloads in regions of LEO to GEO, ORBYTES functions as a platform for users to gain intuition about the beauty and complexity of orbital mechanics.
-Author: Hanna Adamski
-Author-email: hanna.adamski@yale.edu
-Requires-Python: >=3
