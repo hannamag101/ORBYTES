@@ -446,8 +446,12 @@ def rebound_demo():
     
     
     st.header('Evolution of Satellite Orbital Elements (specifically a, e, and inc)')
-
+    
+    image = Image.open('Images/rebound.jpeg')
+    st.image(image, caption = 'Collection of plots created with N-body integrator, REBOUND') 
+    
     st.write('In this demo we begin to analyze the evolution of each satellites orbital elements as a direct consequence of the proximity as well as gravitational perturbations that ensue. We once again refine our approach and understanding of orbital mechanics. We are also able to visualize through the use of high-order symplectic integrators the evolution in three important orbital elements amongst each satellite. ')
+    
     
     def select_data(output_file, **kwargs):
         reduced_data = pd.read_csv(output_file)
