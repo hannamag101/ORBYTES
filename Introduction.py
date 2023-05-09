@@ -58,7 +58,7 @@ def orbital_element_demo():
 
     st.write('This demo illustrates the basics of orbital mechanics. The user is able to experiment with the realationships that exist between the orbital parameters and maneuver how they change the trajectory of the satellite in question. We begin our introduction to 3D projections in this tutorial. ')
 
-    image = Image.open('./orbit.png')
+    image = Image.open('Images/orbit.png')
     st.image(image, caption = '2D Schematic of Orbital Element Relationships')
 
     st.write('Below you will find a list of orbital elements which help characterize the orbit of a satellite. Together with these parameters one is able to define the orbital plane on which a satellite will assume is respective trajectory around any central object (in this case, the Earth).')  
@@ -214,7 +214,7 @@ def space_model():
     st.write('* The value associated with the REF_FRAME keyword shall be ‘TEME’ (see annex A).')
     st.write('* The value associated with the TIME_SYSTEM keyword shall be ‘UTC’.')
 
-    image = Image.open('./orientation.png')
+    image = Image.open('Images/orientation.png')
     st.image(image, caption = '2D Image of Orientation of Orbital Planes which satellites occupy')
     
     def eccentric_anomaly(file, index = 0, iterations = 500): # file is Pandas DataFrame
