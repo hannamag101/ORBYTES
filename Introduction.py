@@ -531,7 +531,7 @@ def rebound_demo():
         ax3.set_ylabel('Inclination', fontsize = 8)
         ax3.tick_params(labelsize = 8)
         ax3.set_xlabel('Time (Days)')
-        ax3.set_xlim(0, index2)
+        ax3.set_xlim(0, (index2*92.8)/(60*24))
 
         ax1.set_title(f'Orbital Evolution of Satellite {object_name}', fontsize = 10, pad = 20)
         st.pyplot(fig)
