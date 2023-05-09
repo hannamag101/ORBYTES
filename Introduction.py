@@ -74,81 +74,102 @@ def orbital_element_demo():
     st.subheader('Select Orbital Parameters:')
     a = st.slider('**:blue[Semi-Major Axis (in km):]**', min_value = 6000, max_value = 26000, step = 1)
     e = st.slider('**:blue[Eccentricity :]**', min_value = 0.0, max_value = 1.0, step = 0.00001)
-    i = st.slider('**:blue[Inclination (in degrees):]**', min_value = 0.0, max_value = 70.0, step = 0.5)
+    inc = st.slider('**:blue[Inclination (in degrees):]**', min_value = 0.0, max_value = 70.0, step = 0.5)
     per = st.slider('**:blue[Argument of Perigee (in degrees):]**', min_value = 0.0, max_value = 360.0, step = 0.5)
     asc = st.slider('**:blue[Longitude of the Ascending Node (in degrees):]**', min_value = 0.0, max_value = 360.0, step = 0.5)
-    ano = st.slider('**:blue[True Anomaly (in degrees):]**', min_value = 0.5, max_value = 360.0, step = 0.5)
+    true_anomaly = st.slider('**:blue[True Anomaly (in degrees):]**', min_value = 0.5, max_value = 360.0, step = 0.5)
 
+    # Define plot axis
     fig = plt.figure()
     ax = fig.add_subplot(1,1,1,projection = '3d')
     fig.set_size_inches(10,10)
-
-
+    
     # Plot Earth
-    unit_vector = (1,1,1)
-    r_x, r_y, r_z = [6378 / np.sqrt(component) for component in unit_vector]
+    unit_vector = np.array([1,1,1])
+    earth_pos_vector = []
+    for cartesian_component in unit_vector:
+        earth_pos_vector.append(6378 / cartesian_component)
+    r_x = earth_pos_vector[0]
+    r_y = earth_pos_vector[1]
+    r_z = earth_pos_vector[2]
+        
+    # Define spherical properties of Earth
+    phi = np.linspace(0, np.pi, 100) # in radians
     theta = np.linspace(0, 2*np.pi, 100)
-    phi = np.linspace(0, np.pi, 100)
+        
+    # Transform to spherical coordinates 
     x = r_x * np.outer(np.cos(theta), np.sin(phi))
     y = r_y * np.outer(np.sin(theta), np.sin(phi))
-    z = r_z * np.outer(np.ones_like(theta), np.cos(phi)) 
+    z = r_z * np.outer(np.ones_like(theta), np.cos(phi))
+        
+    # Find extent of Earth's orbital plane as reference plane (equatorial plane)
+    r_earth = (6378 * (1 - 0**2)) / (1 + 0 * np.cos(theta))
+        
+    # Polar coordinates of Earth's Equatorial Plane projection
+    polar_x_e = r_earth * np.cos(theta)
+    polar_y_e = r_earth * np.sin(theta)
+    polar_z_e = r_earth * 0
+        
+    position_earth_3d = np.matrix(list(zip(polar_x_e, polar_y_e, polar_z_e)))
 
-    # Orientation components
-    i = i / ((2*np.pi)/360) # in radians
-    R = np.matrix([[1, 0, 0], # rotation about the x-axis (actually, line of nodes)
-                    [0, np.cos(i), -np.sin(i)], 
-                    [0, np.sin(i), np.cos(i)]])
-    asc = asc / ((2*np.pi)/360) # in radians
-    R2 = np.matrix([[np.cos(asc), -np.sin(asc), 0],
+    # Plot Earth
+    ax.plot_wireframe(x,y,z, alpha = 0.2, color = 'blue', rstride = 4, cstride = 4)
+    ax.plot(polar_x_e, polar_y_e, polar_z_e, color = 'blue', linestyle = '-')
+    ax.set_axis_on()
+
+    inc = inc * ((2*np.pi) / 360)  # in radians
+    Minc = np.matrix([[1, 0, 0], # rotation about the x-axis (actually, line of nodes)
+                      [0, np.cos(inc), -np.sin(inc)], 
+                      [0, np.sin(inc), np.cos(inc)]])
+    asc = asc * ((2*np.pi) / 360) # in radians
+    Masc = np.matrix([[np.cos(asc), -np.sin(asc), 0],
                     [np.sin(asc), np.cos(asc), 0],
-                    [0, 0, 1]]) # rotation about the Z-axis 
-    per = per / ((2*np.pi)/360) # in radians
-    R3 = np.matrix([[np.cos(per), -np.sin(per), 0], 
+                    [0, 0, 1]]) # rotation about the Z-axis of plane of reference 
+    per = per * ((2*np.pi) / 360) # in radians
+    Mper = np.matrix([[np.cos(per), -np.sin(per), 0], 
                     [np.sin(per), np.cos(per), 0],
-                    [0, 0, 1]]) # Rotation about the Z-axis (actually, angular momentum vector)
-
-    # Polar equation 
+                    [0, 0, 1]]) # Rotation about the Z-axis of plane of orbit (actually, angular momentum vector)
+    # Polar equation for orbit
     r = (a * (1 - e**2))/ (1 + e * np.cos(theta))
     polar_x = r * np.cos(theta)
     polar_y = r * np.sin(theta)
     polar_z = 0 * theta
+    pos_sat_orbit = np.matrix(list(zip(polar_x, polar_y, polar_z)))
+        
+    rot_matrix_mash = Minc * Masc * Mper
 
-    # Equatorial plane
-    a_earth = 6378
-    e_earth = 0
-    r_earth = (a_earth * (1 - e_earth**2))/ (1 + e_earth * np.cos(theta))
-    polar_x_earth = r_earth * np.cos(theta)
-    polar_y_earth = r_earth * np.sin(theta)
-    polar_z_earth = 0 * theta
-
-    points_e = np.matrix(list(zip(polar_x_earth, polar_y_earth, polar_z_earth)))
-    pts_e = points_e.T
-    point_vector_e = pts_e.T
-    x1_e, y1_e, z1_e = point_vector_e[:, 0].A.flatten(), point_vector_e[:, 1].A.flatten(), point_vector_e[:, 2].A.flatten()
-    ax.plot(x1_e, y1_e, z1_e, color = 'blue', linestyle = '-')
-
-    # Plot Satellite 
-    sat = ano * ((2*np.pi)/360)
-    satr = r = (a * (1 - e**2))/ (1 + e * np.cos(sat))
-    satx = satr * np.cos(sat)
-    saty = satr * np.sin(sat)
-    satz = satr * 0
-
-    satpoints = np.matrix([satx, saty, satz])
-    sat_pts = (R * R2 * R3) * satpoints.T
-    satellite_a = sat_pts.flatten()
-    satellitex, satellitey, satellitez = satellite_a[0,0], satellite_a[0,1], satellite_a[0,2]
+    # Newly oriented satellite trajectory
+    oriented_sat_orbit = rot_matrix_mash * pos_sat_orbit.T
+    oriented_sat_orbit = oriented_sat_orbit.T
+        
+    orb_x = sum(oriented_sat_orbit[:,0].tolist(), [])
+    orb_y = sum(oriented_sat_orbit[:,1].tolist(), [])
+    orb_z = sum(oriented_sat_orbit[:,2].tolist(), [])
+        
+        # Plot Satellite Orbit
+    ax.plot(orb_x, orb_y, orb_z, color = 'black', linestyle = '--', linewidth = 1.2) # Plot Satellite Orbit
+        
+    # Plot body of satellite (not orbit)
+    satellite_angle = true_anomaly * (2*np.pi / 360)
+    r = (a * (1 - e**2)) / (1 + e * np.cos(satellite_angle))
+    polar_x = r * np.cos(satellite_angle)
+    polar_y = r * np.sin(satellite_angle)
+    polar_z = (0) * satellite_angle
+    pos_sat_orbit = np.matrix([polar_x, polar_y, polar_z]) # Current coordinate, no integration along orbit
+        
+    rot_matrix_mash = Minc * Masc * Mper
+    oriented_sat_orbit = rot_matrix_mash * pos_sat_orbit.T
+    oriented_sat_orbit = oriented_sat_orbit.T
+        
+    sat = oriented_sat_orbit.flatten()
+    satellitex = sat[0,0] # All correspond to position of physical satellite body at current epoch
+    satellitey = sat[0,1] # extracted from space-track.org
+    satellitez = sat[0,2]
+        
+    # Plot body of satellite
     ax.plot([0, satellitex], [0, satellitey], [0, satellitez], 'g-')
     ax.plot([satellitex],[satellitey], [satellitez], 'go')
-    ax.text(satellitex, satellitey, satellitez, s = 'SATELLITE', fontsize = 11)
-
-    # Plot Orbit 
-    points = np.matrix(list(zip(polar_x, polar_y, polar_z)))
-    pts = (R * R2 * R3) * points.T
-    point_vector = pts.T
-    x1, y1, z1 = point_vector[:, 0].A.flatten(), point_vector[:, 1].A.flatten(), point_vector[:, 2].A.flatten()
-    ax.plot_wireframe(x,y,z, alpha = 0.2, color = 'blue', rstride = 4, cstride = 4)
-    ax.plot(x1, y1, z1, color = 'black', linestyle = '-')
+    ax.text(satellitex, satellitey, satellitez, s = object_name, fontsize = 9)
 
     # Create X-Axis Label
     ax.plot([0,7500],[0,0],[0,0],'r:')
@@ -164,11 +185,6 @@ def orbital_element_demo():
     ax.plot([0,0],[0,0],[0,7500],'r:')
     ax.plot([0],[0],[8000],'r^')
     ax.text(0,0,8300,s='Z', fontsize=12,color='black')
-
-    #Create Z-axis Label
-    ax.plot([0,0],[0,0],[0,7500],'m-')
-    ax.plot([0],[0],[7500],'m<')
-    #ax.text(0,0,8000,s='axis', fontsize=15,color='b')
 
     ax.set_xlabel('X (km)')
     ax.set_ylabel('Y (km)')
