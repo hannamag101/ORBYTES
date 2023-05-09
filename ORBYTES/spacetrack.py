@@ -8,7 +8,6 @@ from mpl_toolkits.mplot3d import Axes3D
 import mpld3
 import streamlit.components.v1 as components
 import plotly.express as px
-%matplotlib qt
 
 class satellite_modeler():
     """ Class that has __ methods which allow us to construct the model of a satellite's trajectory in the context of both the orbital plane it lies on, but also how that satellite differs on its orbital path from others in the same ( & neighboring) constellations!
