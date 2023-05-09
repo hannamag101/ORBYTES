@@ -510,7 +510,7 @@ def rebound_demo():
         data = select_data('Example_csv_set/all_data.csv', OBJECT_NAME = f'{option}-*')
     
     index = st.slider('**:blue[SATELLITE INDEX]**', min_value = 1, max_value = len(data), step = 1)
-    index2 = st.slider('**:blue[ORBIT INTEGRATION]**', min_value = 5, max_value = 1000, step = 1)
+    index2 = st.slider('**:blue[ORBIT INTEGRATION (# of orbits)]**', min_value = 5, max_value = 5000, step = 1)
     
     def plot(a,b,c,d, object_name):
         import matplotlib.pyplot as pyplot
