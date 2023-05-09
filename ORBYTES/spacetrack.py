@@ -35,9 +35,38 @@ class Satellite_Modeler():
                 pass
     
             initial_guess = E_new
-            ind+=1      
+            ind+=1  
+            
+    def eccentric_anomaly_own(self, mean_anomaly, eccentricity, iterations = 500):
+        if mean_anomaly >= 0.6:
+            initial_guess = np.pi
+        else:
+            initial_guess = mean_anomaly
+        ind = 0
+        while ind < iterations:
+            E_old = initial_guess
+            E_new = E_old - ((E_old - eccentricity*np.sin(E_old)-mean_anomaly) / (1-eccentricity*np.cos(E_old)))
+            
+            if np.abs(E_new - E_old) <= 1e-16:
+                return E_new 
+            else:
+                pass
+    
+            initial_guess = E_new
+            ind+=1  
         
+    def full_set_orbital_elements(self, a, e, inc, asc, per, mean_anomaly):
+        a = a
+        e = e
+        inc = inc
+        asc = asc # be careful of the units (make sure to keep track RADIANS or DEGREES)
+        per = per
+        mean_anomaly = mean_anomaly
+        ecc_anomaly = self.eccentric_anomaly_own(mean_anomaly, e)
+        true_anomaly = np.arctan((np.sqrt(1 - e**2) * np.sin(ecc_anomaly)) / (np.cos(ecc_anomaly) - e))
         
+        return a, e, inc, asc, per, true_anomaly
+    
     def extract_orbital_elements_sat(self, file, index):
         whole_file = file
         file = pd.read_csv(file)
