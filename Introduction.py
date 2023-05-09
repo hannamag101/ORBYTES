@@ -414,7 +414,7 @@ def space_model():
     #ax.view_init(elev = 0, azim = 0)
 
     st.pyplot(fig)
-    st.write('To have an interactive sphere where you are able to zoom into orbits and rotate with respect to the viewing angle, take a look at the code and construct your own query!)
+    st.write('To have an interactive sphere where you are able to zoom into orbits and rotate with respect to the viewing angle, take a look at the code and construct your own query!')
              
 def rebound_demo():
     import matplotlib.pyplot as plt
