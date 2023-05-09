@@ -38,7 +38,7 @@ class setup_files():
         User input commands to access satellite data via url
     satellite_csv()
         Create '.csv' file of each satellite's 1) Mean Keplerian Elements & 2) TLE Related Parameters
-    start_sequence()
+    extract_csv()
         Run methods in order, ultimately producing a '.csv' file comprised of satellite data (chosen by user)
     
     """

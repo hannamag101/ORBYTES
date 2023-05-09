@@ -1,0 +1,10 @@
+numpy
+matplotlib
+pandas
+configparser
+streamlit
+mpltools
+rebound
+mpld3
+Pillow
+plotly
