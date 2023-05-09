@@ -244,6 +244,7 @@ def space_model():
         return reduced_data.reset_index(drop = True)
 
     def extract_orbital_elements(file, index = 0):
+        whole_file = file
         # Calls 'plot_orbit' function using the TLE elements defined in output file
         row_orbital_elements = file.loc[file.index[index]]
         object_name = file['OBJECT_NAME'].iloc[index]
@@ -254,7 +255,7 @@ def space_model():
         argument_pericenter = file['ARG_OF_PERICENTER'].iloc[index] # Angle between lines of nodes (ascending node) and periapsis 
         
         mean_anomaly = file['MEAN_ANOMALY'].iloc[index]
-        ecc_anomaly = eccentric_anomaly(file)
+        ecc_anomaly = eccentric_anomaly(whole_file)
         true_anomaly = np.arctan((np.sqrt(1 - eccentricity**2) * np.sin(ecc_anomaly)) / (np.cos(ecc_anomaly) - eccentricity))# Solve for true anomaly using mean anomaly and eccentricity : defines the position of a body along the ellipse at a specific time ('epoch') - angle between periapsis & current location along orbit
     
         return object_name, semi_major_axis, eccentricity, inclination, right_ascension, argument_pericenter, true_anomaly
