@@ -79,10 +79,10 @@ def orbital_element_demo():
     asc = st.slider('**:blue[Longitude of the Ascending Node (in degrees):]**', min_value = 0.0, max_value = 360.0, step = 0.5)
     ano = st.slider('**:blue[True Anomaly (in degrees):]**', min_value = 0.5, max_value = 360.0, step = 0.5)
 
-
     fig = plt.figure()
-    ax = fig.gca(projection = '3d')
+    ax = fig.add_subplot(1,1,1,projection = '3d')
     fig.set_size_inches(10,10)
+
 
     # Plot Earth
     unit_vector = (1,1,1)
