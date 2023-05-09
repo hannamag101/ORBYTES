@@ -17,7 +17,7 @@ def intro():
     st.sidebar.success('Select a demo above.')
 
 
-    image = Image.open('/Users/hannamag/Desktop/ORBYTES1/orbytes.jpeg')
+    image = Image.open('Images/orbytes.jpeg')
     st.image(image, caption = 'DALL-E 2 generated image of ORBYTES')
 
     st.subheader('ORBYTES provides users the ability to interact with an API interface to :green[extract, visualize, and integrate] satellite trajectories actively tracked by space-track.org.')
