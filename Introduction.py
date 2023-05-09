@@ -568,7 +568,7 @@ def rebound_demo():
     plot(df['times(orbits)'], df['e'], df['a'], df['inc'], object_name =object_name_final)
 
     
-    st.write('There is slight fluctuations in orbital elements from gravitational perturbations with other satellites in the nearby vicinity, but nonetheless satellite still remains on its unique trajectory. The fluctuations are on orders of magnitude 10^-8 - 10^-11, therefore they are not detrimental to the orbit of the satellite. At least for the STARLINK satellites, which have a lifetime ~ 5years, we can track their encounters for the time being.')
+    st.write('There are slight fluctuations in the orbital elements of each satellite due to the gravitational perturbations with other satellites in the nearby vicinity, but nonetheless the indexed satellite still remains on its unique trajectory. The fluctuations are on orders of magnitude 10^-11 - 10^-14, therefore they are not detrimental to its motion along the orbit. That allows us, with some confidence, to be able to keep track of many for the time being. How many satellites would it take to knock a payload noticably out of its orbit? A question that simply begs to be answered (and hey maybe it will help us quantify MAXIMUM CONTAMINATION OF LEO/GEO in space?')
     
 page_names_to_funcs = {
     "—": intro,
