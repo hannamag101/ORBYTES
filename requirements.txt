@@ -7,3 +7,4 @@ mpltools
 rebound
 mpld3
 Pillow
+plotly
