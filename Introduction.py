@@ -210,7 +210,8 @@ def space_model():
     st.image(image, caption = '2D Image of Orientation of Orbital Planes which satellites occupy')
     
     def eccentric_anomaly(file, index = 0, iterations = 500): # file is Pandas DataFrame
-        file = pd.read_csv(file)
+        whole_file
+        file = pd.read_csv(whole_file)
         mean_anomaly = file['MEAN_ANOMALY'].iloc[index]
         eccentricity = file['ECCENTRICITY'].iloc[index]
         
