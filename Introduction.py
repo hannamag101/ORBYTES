@@ -195,7 +195,7 @@ def orbital_element_demo():
     ax.set_xlim3d(XYZlim)
     ax.set_ylim3d(XYZlim)
     ax.set_zlim3d(XYZlim * 3/4)
-    ax.set_title('Orbit Modeler for User Input Parameters')
+    ax.set_title('Orbit Modeler for User Input Parameters', fontsize = 20)
     #ax.view_init(elev = 0, azim = 0)
 
     st.pyplot(fig)
