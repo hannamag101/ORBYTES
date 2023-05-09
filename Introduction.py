@@ -285,7 +285,7 @@ def space_model():
 
     # CREATE PLOTS
     fig = plt.figure()
-    ax = fig.gca(projection = '3d')
+    ax = fig.add_subplot(1,1,1,projection = '3d')
     fig.set_size_inches(10,10)
 
     # Plot Earth
