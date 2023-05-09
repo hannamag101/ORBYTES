@@ -538,36 +538,37 @@ def rebound_demo():
     sim = rebound.Simulation()
     sim.add('Earth')
     for i in range(len(data)):
-        object_name, a, e, i, asc, per, mean = extract_orbital_elements(data, index = i)
-        f = rebound.M_to_f(e, mean)
-        sim.add(a = a, e = e, inc = np.radians(i), Omega = np.radians(asc), omega = np.radians(per), f = f)
-    
+        object_name, semi_major_axis, eccentricity, inclination, right_ascension, argument_pericenter, mean_anomaly = extract_orbital_elements(data, index = i)
+        mean_anomaly = np.radians(mean_anomaly)
+        f = rebound.M_to_f(eccentricity, mean_anomaly)
+        sim.add(a = semi_major_axis/6790, e = eccentricity, inc = np.radians(inclination), Omega = np.radians(right_ascension), omega = np.radians(argument_pericenter), f = f)
     particles = sim.particles
-    sim.integrator = 'janus'
+    sim.integrator = 'ias15' # best integrator for close encounters in planetary systems (automatically adapts timesteps to resolve smallest period)
 
-    torb = 2. *np.pi
-    times = np.linspace(0*torb, 1000*torb, 200)
+    torb = 2 * np.pi # 2pi ~ 1 Orbit = 92.8 minutes 
+    times = np.linspace(0, 200*torb, 200) # 200 Orbits
     sim.dt = 1e-3
 
     a = np.zeros(200)
     e = np.zeros(200)
     inc = np.zeros(200)
-    
+
     for i, time in enumerate(times):
         sim.integrate(time, exact_finish_time=0)
-        orbit = sim.particles[index].calculate_orbit(primary = sim.particles[0])
+        orbit = sim.particles[5].calculate_orbit(primary = sim.particles[0])
         a[i] = orbit.a
         e[i] = orbit.e
         inc[i] = orbit.inc
-
+    
     orbital_prop_SS = np.vstack((times, e, a, inc))
     orbital_evol = np.transpose(orbital_prop_SS)
-    df = pd.DataFrame(orbital_evol, columns = ['times(yr)', 'e', 'a', 'inc'])
-    object_name_final, a, e, i, asc, per, mean = extract_orbital_elements(data, index = index)
+    df = pd.DataFrame(orbital_evol, columns = ['times(orbits)', 'e', 'a', 'inc'])
+    object_name_final, a, e, i, asc, per, mean = extract_orbital_elements(data, index = 3)
     
-    plot(df['times(yr)'], 1- df['e'], df['a'], df['inc'], object_name_final)
-    
+    plot(df['times(orbits)'], df['e'], df['a'], df['inc'], object_name =object_name_final)
 
+    
+    st.write('
 page_names_to_funcs = {
     "—": intro,
     "Orbital Elements Tutorial": orbital_element_demo,
