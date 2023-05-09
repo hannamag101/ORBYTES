@@ -10,8 +10,41 @@ import streamlit.components.v1 as components
 import plotly.express as px
 %matplotlib qt
 
-class Satellite_Modeler():
+class satellite_modeler():
+    """ Class that has __ methods which allow us to construct the model of a satellite's trajectory in the context of both the orbital plane it lies on, but also how that satellite differs on its orbital path from others in the same ( & neighboring) constellations!
     
+    Attributes
+    __________
+    file: str
+        Pandas DataFrame that holds all sets of orbital element data
+    orbital elements: floats
+        a, e, inc, asc, per, true_anomaly
+     
+    Methods
+    _______
+    eccentric_anomaly()
+        Calculate the eccentric anomaly by iterating over combinations of the mean_anomaly & eccentricity which was extracted from DataFrame
+    eccentric_anomaly_own_input()
+        Calculate the eccentric anomaly by iterating over combination of the mean anomaly  & eccentricity which were inputted by the USER
+    full_set_orbital_elements()
+        Reiterate orbital elements (& calculate in the case of eccentric and true anomaly) from those chosen by USER
+    extract_orbital_elements()
+        Extract orbital elements (ex. a, e, inc, arg of perigee, etc.) for each satellite from respective pandas DataFrame
+    earth()
+        Define vectors that correspond to equatorial plane parallel to the Earth's equator (treated as reference plane)
+    orientation_sat()
+        Calculate rotation matrices that orient the orbit of the satellite along its trajectory 
+    polar_eqn_ellipse()
+        Calculate explicit positions along ellipse of satellite's orbit where trajectory is defined to pass through
+    orbit_pos()
+        Calculate grid of values corresponding to either the explicit orbit of the satellite or the satellite body's present position at epoch
+    define_earth_grid()
+        Initialize 3D framework which will host orbit model + plot Earth's central postion on it
+    plot_orbits()
+        Initialize all orbits & add component of visualization which comes in the form of adding each position along orbit to defined 3D grid
+    
+    
+    """
     def __init__(self):
         return
     
@@ -199,7 +232,7 @@ class Satellite_Modeler():
         self.ax.plot(polar_x_e, polar_y_e, polar_z_e, color = 'blue', linestyle = '-') # Plot Earth's Equator
         self.ax.set_axis_on()
         
-    def plot(self, file, Name, index, show_name = False):
+    def plot_orbits(self, file, Name, index, show_name = False):
         
         theta = np.linspace(0, 2 * np.pi, 100)
         object_name, a, e, inc, asc, per, true_anomaly = self.extract_orbital_elements_sat(file, index)
