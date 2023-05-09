@@ -169,7 +169,6 @@ def orbital_element_demo():
     # Plot body of satellite
     ax.plot([0, satellitex], [0, satellitey], [0, satellitez], 'g-')
     ax.plot([satellitex],[satellitey], [satellitez], 'go')
-    ax.text(satellitex, satellitey, satellitez, s = object_name, fontsize = 9)
 
     # Create X-Axis Label
     ax.plot([0,7500],[0,0],[0,0],'r:')
