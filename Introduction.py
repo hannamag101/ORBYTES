@@ -245,6 +245,7 @@ def space_model():
 
     def extract_orbital_elements(file, index = 0):
         whole_file = file
+        file = pd.read_csv(file)
         # Calls 'plot_orbit' function using the TLE elements defined in output file
         row_orbital_elements = file.loc[file.index[index]]
         object_name = file['OBJECT_NAME'].iloc[index]
