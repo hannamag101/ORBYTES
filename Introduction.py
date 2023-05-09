@@ -471,30 +471,6 @@ def rebound_demo():
             ecc_anomaly = init - (init - eccentricity * np.sin(init) - mean_anomaly) / (1.0 - eccentricity * np.cos(init))
         
         return ecc_anomaly
-    
-    def plot(a,b,c,d, object_name):
-        import matplotlib.pyplot as pyplot
-
-        rows, cols = 3, 1
-        fig, (ax1, ax2, ax3) = pyplot.subplots(rows, cols, sharex = True)
-        ax1.plot(a/(2*np.pi), c)
-        ax1.set_ylabel('Semi-major Axis', fontsize = 8)
-        ax1.tick_params(labelsize = 8)
-        ax1.set_xlim(0,200)
-        
-        ax2.plot(a/(2*np.pi), b)
-        ax2.set_ylabel('Eccentricity', fontsize = 8)
-        ax2.tick_params(labelsize = 7.5)
-        ax2.set_xlim(0,200)
-        
-        ax3.plot(a/(2*np.pi), d * (360/(2*np.pi)))
-        ax3.set_ylabel('Inclination', fontsize = 8)
-        ax3.tick_params(labelsize = 8)
-        ax3.set_xlabel('Time (Orbits)')
-        ax3.set_xlim(0, 200)
-
-        ax1.set_title(f'Orbital Evolution of Satellite {object_name}', fontsize = 10, pad = 20)
-        st.pyplot(fig)
 
     def extract_orbital_elements(file, index = 0):
         # Calls 'plot_orbit' function using the TLE elements defined in output file
@@ -534,7 +510,32 @@ def rebound_demo():
         data = select_data('Example_csv_set/all_data.csv', OBJECT_NAME = f'{option}-*')
     
     index = st.slider('**:blue[SATELLITE INDEX]**', min_value = 1, max_value = len(data), step = 1)
+    index2 = st.slider('**:blue[ORBIT INTEGRATION]**', min_value = 5, max_value = 1000, step = 1)
+    
+    def plot(a,b,c,d, object_name):
+        import matplotlib.pyplot as pyplot
 
+        rows, cols = 3, 1
+        fig, (ax1, ax2, ax3) = pyplot.subplots(rows, cols, sharex = True)
+        ax1.plot(a/(2*np.pi), c)
+        ax1.set_ylabel('Semi-major Axis', fontsize = 8)
+        ax1.tick_params(labelsize = 8)
+        ax1.set_xlim(0,index2)
+        
+        ax2.plot(a/(2*np.pi), b)
+        ax2.set_ylabel('Eccentricity', fontsize = 8)
+        ax2.tick_params(labelsize = 7.5)
+        ax2.set_xlim(0,index2)
+        
+        ax3.plot(a/(2*np.pi), d * (360/(2*np.pi)))
+        ax3.set_ylabel('Inclination', fontsize = 8)
+        ax3.tick_params(labelsize = 8)
+        ax3.set_xlabel('Time (Orbits)')
+        ax3.set_xlim(0, index2)
+
+        ax1.set_title(f'Orbital Evolution of Satellite {object_name}', fontsize = 10, pad = 20)
+        st.pyplot(fig)
+        
     sim = rebound.Simulation()
     sim.add('Earth')
     for i in range(len(data)):
@@ -546,7 +547,7 @@ def rebound_demo():
     sim.integrator = 'ias15' # best integrator for close encounters in planetary systems (automatically adapts timesteps to resolve smallest period)
 
     torb = 2 * np.pi # 2pi ~ 1 Orbit = 92.8 minutes 
-    times = np.linspace(0, 200*torb, 200) # 200 Orbits
+    times = np.linspace(0, index2*torb, 200) # 200 Orbits
     sim.dt = 1e-3
 
     a = np.zeros(200)
