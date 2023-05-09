@@ -226,8 +226,8 @@ def space_model():
 
     # Need orbital elements extracted of specific satellites 
     option = st.selectbox('**:blue[Which Constellation of Satellites would you like to plot?]**',
-                      ('STARLINK','STARLINK 10:20', 'GALILEO', 'GLONASS', 'GLONASS 10:20', 'GLOBALSTAR',
-                      'GLOBALSTAR 10:20'))
+                      ('STARLINK','10 Random STARLINK', 'GALILEO', 'GLONASS', '10 Random GLONASS', 'GLOBALSTAR',
+                      '10 Random GLOBALSTAR'))
     st.write('You selected:', option)
 
     def eccentric_anomaly(file, index = 0, iterations = 500): # file is Pandas DataFrame
@@ -279,21 +279,21 @@ def space_model():
     full = pd.read_csv('Example_csv_set/all_data.csv')
     if option == 'STARLINK':
         data = select_data('Example_csv_set/all_data.csv', OBJECT_NAME = 'STARLINK-*')
-    elif option == 'STARLINK 10:20':
+    elif option == '10 Random STARLINK':
         data = select_data('Example_csv_set/all_data.csv', OBJECT_NAME = 'STARLINK-*')
-        data = data[10:20]
+        data = data.sample(n = 10)
     elif option == 'GALILEO':
         data = select_data('Example_csv_set/all_data.csv', OBJECT_NAME = 'GALILEO-*')
     elif option == 'GLONASS':
         data = select_data('Example_csv_set/all_data.csv', OBJECT_NAME = 'GLONASS-*')
-    elif option == 'GLONASS 10:20':
+    elif option == '10 Random GLONASS':
         data = select_data('Example_csv_set/all_data.csv', OBJECT_NAME = 'GLONASS-*')
-        data = data[10:20]
+        data = data.sample(n=10)
     elif option == 'GLOBALSTAR':
         data = select_data('Example_csv_set/all_data.csv', OBJECT_NAME = 'GLOBALSTAR-*')
-    elif option == 'GLOBALSTAR 10:20':
+    elif option == '10 Random GLOBALSTAR':
         data = select_data('Example_csv_set/all_data.csv', OBJECT_NAME = 'GLOBALSTAR-*')
-        data = data[10:20]
+        data = data.sample(n=10)
     else: 
         data = select_data('Example_csv_set/all_data.csv', OBJECT_NAME = f'{option}-*')
         
