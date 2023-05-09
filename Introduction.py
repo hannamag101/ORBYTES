@@ -450,7 +450,7 @@ def rebound_demo():
     image = Image.open('Images/rebound.jpeg')
     st.image(image, caption = 'Collection of plots created with N-body integrator, REBOUND') 
     
-    st.write('In this demo we begin to analyze the evolution of each satellites orbital elements as a direct consequence of the proximity as well as gravitational perturbations that ensue. We once again refine our approach and understanding of orbital mechanics. We are also able to visualize through the use of high-order symplectic integrators the evolution in three important orbital elements amongst each satellite. ')
+    st.write('In this demo we begin to analyze the evolution of each satellites orbital elements as a direct consequence of the proximity of satellites, thus quantifying the effects of their gravitational perturbations. We once again refine our approach and understanding of orbital mechanics. We are also able to visualize through the use of high-order symplectic integrators the evolution in three important orbital elements amongst each satellite.')
     
     
     def select_data(output_file, **kwargs):
@@ -514,26 +514,26 @@ def rebound_demo():
 
     # Need orbital elements extracted of specific satellites 
     option = st.selectbox('**:blue[Which Constellation of Satellites would you like to plot?]**',
-                          ('STARLINK','STARLINK 1:20', 'GALILEO', 'GLONASS', 'GLONASS 1:20'))
+                          ('STARLINK','10 Random STARLINK', 'GALILEO', 'GLONASS', '10 Random GLONASS'))
     st.write('You selected:', option)
 
     full = pd.read_csv('Example_csv_set/all_data.csv')
     if option == 'STARLINK':
         data = select_data('Example_csv_set/all_data.csv', OBJECT_NAME = 'STARLINK-*')
-    elif option == 'STARLINK 1:20':
+    elif option == '10 Random STARLINK':
         data = select_data('Example_csv_set/all_data.csv', OBJECT_NAME = 'STARLINK-*')
-        data = data[0:20]
+        data = data.sample(n=10)
     elif option == 'GALILEO':
         data = select_data('Example_csv_set/all_data.csv', OBJECT_NAME = 'GALILEO-*')
     elif option == 'GLONASS':
         data = select_data('Example_csv_set/all_data.csv', OBJECT_NAME = 'GLONASS-*')
-    elif option == 'GLONASS 1:20':
+    elif option == '10 Random GLONASS':
         data = select_data('Example_csv_set/all_data.csv', OBJECT_NAME = 'GLONASS-*')
-        data = data[0:20]
+        data = data.sample(n=10)
     else: 
         data = select_data('Example_csv_set/all_data.csv', OBJECT_NAME = f'{option}-*')
     
-    index = st.slider('**:blue[SATELLITE INDEX]**', min_value = 0, max_value = len(data), step = 1)
+    index = st.slider('**:blue[SATELLITE INDEX]**', min_value = 1, max_value = len(data), step = 1)
 
     sim = rebound.Simulation()
     sim.add('Earth')
