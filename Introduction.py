@@ -517,12 +517,12 @@ def rebound_demo():
 
         rows, cols = 3, 1
         fig, (ax1, ax2, ax3) = pyplot.subplots(rows, cols, sharex = True)
-        ax1.plot(a/(2*np.pi), c)
+        ax1.plot((((a/(2*np.pi))*92.8)/60)/24, c)
         ax1.set_ylabel('Semi-major Axis', fontsize = 8)
         ax1.tick_params(labelsize = 8)
         ax1.set_xlim(0,index2)
         
-        ax2.plot(a/(2*np.pi), b)
+        ax2.plot((((a/(2*np.pi))*92.8)/60)/24, b)
         ax2.set_ylabel('Eccentricity', fontsize = 8)
         ax2.tick_params(labelsize = 7.5)
         ax2.set_xlim(0,index2)
